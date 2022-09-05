@@ -1,13 +1,7 @@
 name: Terraform formating and validation
 
 on:
-  push:
-    branches:
-      - main 
-  pull_request:
-    branches:
-      - '*'
-
+  workflow_call:
 jobs:
   format:
     runs-on: ubuntu-latest
