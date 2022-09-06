@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#Token
-#org
-#workspace
+# script required 3 arguments
+#TF_TOKEN - terraform cloud team token
+#organization - name of the organization on terraform cloud
+#workspace - name of the workspace in that org
 
 # set token
 if [ ! -z "$1" ]; then
@@ -25,7 +26,7 @@ fi
 sleep_duration=5
 
 echo "Tarring configuration directory."
-tar -czf config.tar.gz -C . --exclude .git .
+tar -czf config.tar.gz -C . --exclude .git --exclude common-functions --exclude policies --exclude script.sh .
 
 cat > configversion.json <<EOF
 {
