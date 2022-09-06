@@ -262,4 +262,4 @@ echo "enforce_mandatory_tags_policy - $enforce_mandatory_tags_policy" >> message
 echo "restrict_terraform_versions_policy - $restrict_terraform_versions_policy" >> message.txt
 echo "validate_variables_have_descriptions_policy - $validate_variables_have_descriptions_policy" >> message.txt
 
-echo "Finished"
+if grep -q fail message.txt; then exit 1; fi
