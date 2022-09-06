@@ -1,0 +1,5 @@
+#omitting mock data
+policies/test/*/*.sentinel
+*.json
+*.tar.gz
+.sentinel/

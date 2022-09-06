@@ -24,3 +24,6 @@ jobs:
         uses: dflook/terraform-fmt@v1
         with:
           path: .
+
+      - name: execute script
+        run: ${{ github.action_path }}/script.sh
