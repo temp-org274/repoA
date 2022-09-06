@@ -24,16 +24,15 @@ jobs:
         uses: dflook/terraform-fmt@v1
         with:
           path: .
+      - name: checkout script and policies
+        uses: actions/checkout@v2
+        with:
+          repository: temp-org274/repoA
+          path: .
       - name: github context
         run: |
           echo ${{ github.action_repository }}
           echo ${{ github.action_path }}
           ls
-      - name: checkout script and policies
-        uses: actions/checkout@v2
-        with:
-          repository: temp-org274/repoB
-          path: .
-
       - name: execute script
         run: script.sh
