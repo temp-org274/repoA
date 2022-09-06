@@ -205,10 +205,12 @@ while [ $continue -ne 0 ]; do
     sleep 15
     plan_result=$(curl -s --header "Authorization: Bearer $TF_TOKEN" --header "Content-Type: application/vnd.api+json" https://app.terraform.io/api/v2/runs/${run_id}?include=plan)
     plan_id=$(echo $plan_result | jq -r '.included[0].id')
+    echo "plan id: $plan_id"
     #Set plan id in exports.json
     sed "s/plan-id/${plan_id}/" < exports.template.json > exports.json
     plan_exports_result=$(curl -s --header "Authorization: Bearer $TF_TOKEN" --header "Content-Type: application/vnd.api+json" --request POST --data @exports.json https://app.terraform.io/api/v2/plan-exports)
     plan_exports_id=$(echo $plan_exports_result | jq -r '.data.id')
+    echo "plan exports id: $plan_exports_id"
     curl -s --header "Authorization: Bearer $TF_TOKEN" --header "Content-Type: application/vnd.api+json" --location https://app.terraform.io/api/v2/plan-exports/${plan_exports_id}/download > exports.tar.gz
   # errored means that plan had an error
   elif [[ "$run_status" == "errored" ]]; then
