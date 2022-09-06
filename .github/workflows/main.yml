@@ -41,7 +41,7 @@ jobs:
         run: |
           ls
           mv ./temp_path/* .
-          rm -rf ./temp_path
+          rm -rf temp_path
           echo
           ls
 
