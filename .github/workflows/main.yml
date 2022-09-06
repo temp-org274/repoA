@@ -7,8 +7,6 @@ on:
         required: true
       ORGANIZATION:
         required: true
-      GIT_TOKEN:
-        required: true
 
 jobs:
   format:
@@ -52,9 +50,10 @@ jobs:
         run: bash script.sh ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
 
       - name: write policy check result to pr
+        run: echo "$(cat message.txt)" >> $MESSAGE
         uses: mshick/add-pr-comment@v1
         with:
           message: |
-            cat message.txt
-          repo-token: ${{ secrets.GIT_TOKEN }}
+            ${{ env.MESSAGE }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
