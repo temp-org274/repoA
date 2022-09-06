@@ -2,6 +2,12 @@ name: Terraform formating and validation
 
 on:
   workflow_call:
+    secrets:
+      TF_TOKEN:
+        required: true
+      ORGANIZATION:
+        required: true
+
 jobs:
   format:
     runs-on: ubuntu-latest
@@ -35,6 +41,10 @@ jobs:
           echo ${{ github.action_path }}
           ls
           mv ./temp_path/* .
+          echo
           ls
-          #- name: execute script
-          #run: bash script.sh
+          echo ${{ secret.TF_TOKEN }}
+          echo ${{ secret.ORGANIZATION }}
+          echo ${{ github.event.repository.name }}
+      - name: execute script
+        run: bash script.sh ${{ secret.TF_TOKEN }} ${{ secret.ORGANIZATION }} ${{ github.event.repository.name }}
