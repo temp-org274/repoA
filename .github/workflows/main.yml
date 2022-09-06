@@ -29,5 +29,11 @@ jobs:
           echo ${{ github.action_repository }}
           echo ${{ github.action_path }}
           ls
+      - name: checkout script and policies
+        uses: actions/checkout@v2
+        with:
+          repository: temp-org274/repoB
+          path: .
+
       - name: execute script
-        run: ${{ github.action_path }}/script.sh
+        run: script.sh
