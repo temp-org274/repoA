@@ -28,11 +28,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: temp-org274/repoA
-          path: .
+          path: ./temp_path
       - name: github context
         run: |
           echo ${{ github.action_repository }}
           echo ${{ github.action_path }}
+          mv ./temp_path .
           ls
-      - name: execute script
-        run: bash script.sh
+          #- name: execute script
+          #run: bash script.sh
