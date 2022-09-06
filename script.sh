@@ -44,7 +44,7 @@ cat > workspace.template.json <<EOF
   "data":
   {
     "attributes": {
-      "name":"placeholder",
+      "name":"workspace_name",
       "terraform-version": "1.2.8"
     },
     "type":"workspaces"
@@ -93,12 +93,23 @@ cat > exports.template.json <<EOF
 }
 EOF
 
+cat varset.template.json <<EOF
+{
+  "data": [
+    {
+      "type": "workspaces",
+      "id": "workspace_id"
+    }
+  ]
+}
+EOF
+
 #cat > apply.json <<EOF
 #{"comment": "apply via API"}
 #EOF
 
 #Set name of workspace in workspace.json
-sed "s/placeholder/${workspace}/" < workspace.template.json > workspace.json
+sed "s/workspace_name/${workspace}/" < workspace.template.json > workspace.json
 
 # Check to see if the workspace already exists
 echo ""
@@ -124,6 +135,14 @@ else
   echo ""
   echo "Workspace already existed."
 fi
+
+# Set id of workspace in varset.json
+sed "s/workspace_id/${workspace_id}/" < varset.template.json > varset.json
+
+# add workspace to varset
+varset_result=$(curl --header "Authorization: Bearer $TF_TOKEN" https://app.terraform.io/api/v2/organizations/${organization}/varsets)
+varset_id=$(echo $varset_result | jq -r '.data[0].id')
+curl --header "Authorization: Bearer $TF_TOKEN" --header "Content-Type: application/vnd.api+json" --request POST --data @varset.json https://app.terraform.io/api/v2/varsets/${varset_id}/relationships/workspaces
 
 # Create configuration version
 echo ""
@@ -171,16 +190,10 @@ while [ $continue -ne 0 ]; do
   is_confirmable=$(echo $check_result | jq -r '.data.attributes.actions."is-confirmable"')
   echo "Run can be applied: " $is_confirmable
 
-  # Save plan log in some cases
+  # Save plan log if errored
   save_plan="false"
 
-  # Apply in some cases
-  applied="false"
-
-  # Run is planning - get the plan
-
-  # planned means plan finished and no Sentinel policy sets
-  # exist or are applicable to the workspace
+  # pllaned and finished means plan only has completed
   if [[ "$run_status" == "planned_and_finished" ]]; then
     continue=0
     echo ""
@@ -200,8 +213,8 @@ while [ $continue -ne 0 ]; do
     save_plan="true"
     continue=0
   else
-    # Sleep and then check status again in next loop
-    echo "We will sleep and try again soon."
+    # pause and then check status again in next loop
+    echo "Pause and loop again"
   fi
 done
 
@@ -223,6 +236,10 @@ fi
 tar xvzf exports.tar.gz -C policies/test/enforce-mandatory-tags/
 tar xvzf exports.tar.gz -C policies/test/restrict-terraform-versions/
 tar xvzf exports.tar.gz -C policies/test/validate-variables-have-descriptions/
+
+wget https://releases.hashicorp.com/sentinel/0.18.11/sentinel_0.18.11_linux_amd64.zip
+unzip sentinel_0.18.11_linux_amd64.zip
+mv sentinel /usr/local/bin/sentinel
 
 # run sentinel tests
 sentinel test policies/enforce-mandatory-tags.sentinel
