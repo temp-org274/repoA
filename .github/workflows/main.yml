@@ -35,4 +35,4 @@ jobs:
           echo ${{ github.action_path }}
           ls
       - name: execute script
-        run: script.sh
+        run: bash script.sh
