@@ -33,7 +33,8 @@ jobs:
         run: |
           echo ${{ github.action_repository }}
           echo ${{ github.action_path }}
-          mv ./temp_path .
+          ls
+          mv ./temp_path/* .
           ls
           #- name: execute script
           #run: bash script.sh
