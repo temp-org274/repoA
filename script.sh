@@ -58,7 +58,7 @@ cat > run.template.json <<EOF
   "data": {
     "attributes": {
       "is-destroy":false,
-      "plan-only":false
+      "plan-only":true
     },
     "type":"runs",
     "relationships": {
