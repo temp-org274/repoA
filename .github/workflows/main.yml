@@ -7,6 +7,8 @@ on:
         required: true
       ORGANIZATION:
         required: true
+      GIT_TOKEN:
+        required: true
 
 jobs:
   format:
@@ -54,3 +56,5 @@ jobs:
         with:
           message: |
             cat message.txt
+          repo-token: ${{ secrets.GIT_TOKEN }}
+
