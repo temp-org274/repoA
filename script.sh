@@ -26,7 +26,10 @@ fi
 sleep_duration=5
 
 echo "Tarring configuration directory."
-tar -czf config.tar.gz -C . --exclude .git --exclude common-functions --exclude policies --exclude script.sh .
+tar -czf config.tar.gz -C . --exclude .git --exclude .gitignore  --exclude .github --exclude common-functions --exclude policies --exclude script.sh .
+
+tar xvzf config.tar.gz -C config-temp
+ls config-temp
 
 cat > configversion.json <<EOF
 {
@@ -160,9 +163,7 @@ echo "Upload URL: " $upload_url
 # Upload configuration
 echo ""
 echo "Uploading configuration version using config.tar.gz"
-#curl -s --request PUT -F 'data=@myconfig.tar.gz' "$upload_url"
 curl -s --header "Content-Type: application/octet-stream" --request PUT --data-binary @config.tar.gz "$upload_url"
-
 
 
 # Do a run
