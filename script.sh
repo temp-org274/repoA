@@ -213,9 +213,11 @@ while [ $continue -ne 0 ]; do
     echo "The run has errored. This is a final state."
     save_plan="true"
     continue=0
-  elif [[ -z "$run_status" ]]; then
+  elif [[ -z "$run_status" ]] || [[ "$run_status" == "null" ]]; then
+    echo ""
     echo "error in run"
-    exit
+    echo "output of run: $run_result"
+    continue=0
   else
     # pause and then check status again in next loop
     echo "Pause and loop again"
