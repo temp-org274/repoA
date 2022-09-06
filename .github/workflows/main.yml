@@ -48,9 +48,11 @@ jobs:
           echo ${{ github.event.repository.name }}
       - name: execute script
         run: bash script.sh ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
-
+      - name: debugging
+        run: |
+          ls
+          echo "$(cat message.txt)" >> $MESSAGE
       - name: write policy check result to pr
-        run: echo "$(cat message.txt)" >> $MESSAGE
         uses: mshick/add-pr-comment@v1
         with:
           message: |
