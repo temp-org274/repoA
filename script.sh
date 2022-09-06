@@ -212,7 +212,7 @@ while [ $continue -ne 0 ]; do
     echo "The run has errored. This is a final state."
     save_plan="true"
     continue=0
-  elif [[ -z "$run_status" ]]
+  elif [[ -z "$run_status" ]]; then
     echo "error in run"
     exit
   else
