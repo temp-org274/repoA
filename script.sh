@@ -93,7 +93,7 @@ cat > exports.template.json <<EOF
 }
 EOF
 
-cat varset.template.json <<EOF
+cat > varset.template.json <<EOF
 {
   "data": [
     {
@@ -212,6 +212,9 @@ while [ $continue -ne 0 ]; do
     echo "The run has errored. This is a final state."
     save_plan="true"
     continue=0
+  elif [[ -z "$run_status" ]]
+    echo "error in run"
+    exit
   else
     # pause and then check status again in next loop
     echo "Pause and loop again"
