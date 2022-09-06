@@ -12,6 +12,8 @@ jobs:
   format:
     runs-on: ubuntu-latest
     name: sentinel check
+    env:
+      MESSAGE: default-message
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -37,21 +39,18 @@ jobs:
           path: ./temp_path
       - name: github context
         run: |
-          echo ${{ github.action_repository }}
-          echo ${{ github.action_path }}
           ls
           mv ./temp_path/* .
+          rm -rf ./temp_path
           echo
           ls
-          echo ${{ secrets.TF_TOKEN }}
-          echo ${{ secrets.ORGANIZATION }}
-          echo ${{ github.event.repository.name }}
+
       - name: execute script
         run: bash script.sh ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
       - name: debugging
         run: |
           ls
-          echo "$(cat message.txt)" >> $MESSAGE
+          echo "$(cat message.txt)" >> "$MESSAGE"
       - name: write policy check result to pr
         uses: mshick/add-pr-comment@v1
         with:
