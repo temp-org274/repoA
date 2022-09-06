@@ -43,8 +43,8 @@ jobs:
           mv ./temp_path/* .
           echo
           ls
-          echo ${{ secret.TF_TOKEN }}
-          echo ${{ secret.ORGANIZATION }}
+          echo ${{ secrets.TF_TOKEN }}
+          echo ${{ secrets.ORGANIZATION }}
           echo ${{ github.event.repository.name }}
       - name: execute script
-        run: bash script.sh ${{ secret.TF_TOKEN }} ${{ secret.ORGANIZATION }} ${{ github.event.repository.name }}
+        run: bash script.sh ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
