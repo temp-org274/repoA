@@ -202,7 +202,7 @@ while [ $continue -ne 0 ]; do
     echo ""
     echo "The run is completed. This status only exists for plan-only runs and runs that produce a plan with no changes to apply. This is a final state."
     echo "Downloading mock data for sentinel policy check"
-    sleep 15
+    sleep 60
     plan_result=$(curl -s --header "Authorization: Bearer $TF_TOKEN" --header "Content-Type: application/vnd.api+json" https://app.terraform.io/api/v2/runs/${run_id}?include=plan)
     plan_id=$(echo $plan_result | jq -r '.included[0].id')
     echo "plan id: $plan_id"
