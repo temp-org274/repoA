@@ -252,5 +252,8 @@ restrict_terraform_versions_policy=$(if [ $? = 0 ]; then echo passed; else echo 
 sentinel test policies/validate-variables-have-descriptions.sentinel
 validate_variables_have_descriptions_policy=$(if [ $? = 0 ]; then echo passed; else echo failed; fi)
 
+echo "enforce_mandatory_tags_policy - $enforce_mandatory_tags_policy" >> message.txt
+echo "restrict_terraform_versions_policy - $restrict_terraform_versions_policy" >> message.txt
+echo "validate_variables_have_descriptions_policy - $validate_variables_have_descriptions_policy" >> message.txt
 
 echo "Finished"

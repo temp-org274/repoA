@@ -3,3 +3,6 @@ policies/test/*/*.sentinel
 *.json
 *.tar.gz
 .sentinel/
+*.log
+*.txt
+*.zip
