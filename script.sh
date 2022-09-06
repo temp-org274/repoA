@@ -28,6 +28,7 @@ sleep_duration=5
 echo "Tarring configuration directory."
 tar -czf config.tar.gz -C . --exclude .git --exclude .gitignore  --exclude .github --exclude common-functions --exclude policies --exclude script.sh .
 
+mkdir config-temp
 tar xvzf config.tar.gz -C config-temp
 ls config-temp
 
@@ -238,6 +239,7 @@ if [[ "$save_plan" == "true" ]]; then
   curl -s $plan_log_url | tee ${run_id}.log
 fi
 
+ls
 
 # untar mock data
 tar xvzf exports.tar.gz -C policies/test/enforce-mandatory-tags/
