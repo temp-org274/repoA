@@ -209,7 +209,7 @@ while [ $continue -ne 0 ]; do
     echo "Downloading mock data for sentinel policy check"
     curl -s --header "Authorization: Bearer $TF_TOKEN" --header "Content-Type: application/vnd.api+json" --location https://app.terraform.io/api/v2/plan-exports/${plan_exports_id}/download > exports.tar.gz
     tar_size=$(ls -lh exports.tar.gz)
-    echo "tar_size: $tar_size)
+    echo "tar_size: $tar_size)"
   # errored means that plan had an error
   elif [[ "$run_status" == "errored" ]]; then
     echo ""

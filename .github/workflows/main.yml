@@ -12,8 +12,6 @@ jobs:
   format:
     runs-on: ubuntu-latest
     name: sentinel check
-    env:
-      MESSAGE: default-message
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -50,7 +48,7 @@ jobs:
       - name: debugging
         run: |
           ls
-          echo "$(cat message.txt)" >> "$MESSAGE"
+          echo "MESSAGE=$(cat message.txt)" >> $GITHUB_ENV
       - name: write policy check result to pr
         uses: mshick/add-pr-comment@v1
         with:
