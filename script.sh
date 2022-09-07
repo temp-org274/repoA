@@ -197,8 +197,7 @@ while [ $continue -ne 0 ]; do
     continue=0
     echo ""
     echo "The run is completed. This status only exists for plan-only runs and runs that produce a plan with no changes to apply. This is a final state."
-    echo "Downloading mock data for sentinel policy check"
-    sleep 60
+    sleep 120
     plan_result=$(curl -s --header "Authorization: Bearer $TF_TOKEN" --header "Content-Type: application/vnd.api+json" https://app.terraform.io/api/v2/runs/${run_id}?include=plan)
     plan_id=$(echo $plan_result | jq -r '.included[0].id')
     echo "plan id: $plan_id"
@@ -207,7 +206,10 @@ while [ $continue -ne 0 ]; do
     plan_exports_result=$(curl -s --header "Authorization: Bearer $TF_TOKEN" --header "Content-Type: application/vnd.api+json" --request POST --data @exports.json https://app.terraform.io/api/v2/plan-exports)
     plan_exports_id=$(echo $plan_exports_result | jq -r '.data.id')
     echo "plan exports id: $plan_exports_id"
+    echo "Downloading mock data for sentinel policy check"
     curl -s --header "Authorization: Bearer $TF_TOKEN" --header "Content-Type: application/vnd.api+json" --location https://app.terraform.io/api/v2/plan-exports/${plan_exports_id}/download > exports.tar.gz
+    tar_size=$(ls -lh exports.tar.gz)
+    echo "tar_size: $tar_size)
   # errored means that plan had an error
   elif [[ "$run_status" == "errored" ]]; then
     echo ""
@@ -239,6 +241,7 @@ if [[ "$save_plan" == "true" ]]; then
 fi
 
 ls
+ls -lh exports.tar.gz
 tar xvzf exports.tar.gz
 # untar mock data
 tar xvzf exports.tar.gz -C policies/test/enforce-mandatory-tags/
