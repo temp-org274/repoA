@@ -11,7 +11,7 @@ jobs:
 
       - name: execute script
         run: |
-          curl -s --header "Authorization: Bearer d0PsYC7MywmUgg.atlasv1.ruDglUylAMpyRgooDmGhPZd6JQzV2neGbc1koXjkp5gToRSu9Ru7sIUbz0eLv2Z7Ob0" --header "Content-Type: application/vnd.api+json" --location https://app.terraform.io/api/v2/plan-exports/pe-DuZAjX9vKTiJJfXq/download > exports.tar.gz
+          curl -v --header "Authorization: Bearer d0PsYC7MywmUgg.atlasv1.ruDglUylAMpyRgooDmGhPZd6JQzV2neGbc1koXjkp5gToRSu9Ru7sIUbz0eLv2Z7Ob0" --header "Content-Type: application/vnd.api+json" --location https://app.terraform.io/api/v2/plan-exports/pe-DuZAjX9vKTiJJfXq/download > exports.tar.gz
           ls -lh exports.tar.gz
           tar xvzf exports.tar.gz
 
