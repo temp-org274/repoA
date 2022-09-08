@@ -8,10 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     name: sentinel check
     steps:
-
-      - name: execute script
-        run: |
-          curl -v --header "Authorization: Bearer d0PsYC7MywmUgg.atlasv1.ruDglUylAMpyRgooDmGhPZd6JQzV2neGbc1koXjkp5gToRSu9Ru7sIUbz0eLv2Z7Ob0" --header "Content-Type: application/vnd.api+json" --location https://app.terraform.io/api/v2/plan-exports/pe-DuZAjX9vKTiJJfXq/download > exports.tar.gz
-          ls -lh exports.tar.gz
-          tar xvzf exports.tar.gz
+      - name: checkout terraform code
+          uses: actions/checkout@v2
+          with:
+            repository: temp-org274/repoA
+            path: ./config-code
+        - name: run docker container containing script
+          uses: addnab/docker-run-action@v3
+          with:
+            image: sentinel:0.1.2
+            options: -v ./config-code:/opt/sentinel/config-code ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
 
