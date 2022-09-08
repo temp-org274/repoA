@@ -9,13 +9,13 @@ jobs:
     name: sentinel check
     steps:
       - name: checkout terraform code
-          uses: actions/checkout@v2
-          with:
-            repository: temp-org274/repoA
-            path: ./config-code
-        - name: run docker container containing script
-          uses: addnab/docker-run-action@v3
-          with:
-            image: sentinel:0.1.2
-            options: -v ./config-code:/opt/sentinel/config-code ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
+        uses: actions/checkout@v2
+        with:
+          repository: temp-org274/repoA
+          path: ./config-code
+      - name: run docker container containing script
+        uses: addnab/docker-run-action@v3
+        with:
+          image: sentinel:0.1.2
+          options: -v ./config-code:/opt/sentinel/config-code ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
 
