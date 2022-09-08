@@ -17,6 +17,6 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: ruchabhange/sentinel:0.1.2
-          options: -v ./config-code:/opt/sentinel/config-code -e TF_TOKEN=${{ secrets.TF_TOKEN }} -e organisation=${{ secrets.ORGANIZATION }} -e workspace=${{ github.event.repository.name }}
+          options: -v $PWD/config-code:/opt/sentinel/config-code -e TF_TOKEN=${{ secrets.TF_TOKEN }} -e organisation=${{ secrets.ORGANIZATION }} -e workspace=${{ github.event.repository.name }}
           shell: bash
 
