@@ -16,6 +16,6 @@ jobs:
       - name: run docker container containing script
         uses: addnab/docker-run-action@v3
         with:
-          image: sentinel:0.1.2
+          image: ruchabhange/sentinel:0.1.2
           options: -v ./config-code:/opt/sentinel/config-code ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
 
