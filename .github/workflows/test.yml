@@ -18,4 +18,5 @@ jobs:
         with:
           image: ruchabhange/sentinel:0.1.2
           options: -v ./config-code:/opt/sentinel/config-code ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
+          shell: bash
 
