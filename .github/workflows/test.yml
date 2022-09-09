@@ -1,7 +1,12 @@
 name: Terraform sentinel policies check
 
 on:
-  push:
+  workflow_call:
+    secrets:
+      TF_TOKEN:
+        required: true
+      ORGANIZATION:
+        required: true
 
 jobs:
   format:
@@ -11,7 +16,6 @@ jobs:
       - name: checkout terraform code
         uses: actions/checkout@v2
         with:
-          repository: temp-org274/repoB
           path: ./config-code
       - name: run docker container containing script
         uses: addnab/docker-run-action@v3
