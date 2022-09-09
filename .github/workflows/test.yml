@@ -15,8 +15,6 @@ jobs:
     steps:
       - name: checkout terraform code
         uses: actions/checkout@v2
-        with:
-          path: ./config-code
       - name: run docker container containing script
         uses: addnab/docker-run-action@v3
         with:
