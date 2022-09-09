@@ -15,6 +15,11 @@ jobs:
     steps:
       - name: checkout terraform code
         uses: actions/checkout@v2
+      - name: debug
+        run: |
+          pwd
+          ls
+          echo "github workspace: ${{ env.GITHUB_WORKSPACE }}"
       - name: run docker container containing script
         uses: addnab/docker-run-action@v3
         with:
