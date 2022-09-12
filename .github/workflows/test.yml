@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: infracloudio/sentinel-policy-as-code
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GIT_TOKEN }}
           path: ./sentinel-policy-as-code
       - name: run docker container containing script
         uses: addnab/docker-run-action@v3
