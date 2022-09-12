@@ -10,8 +10,6 @@ on:
         required: true
       ORGANIZATION:
         required: true
-      PRIVATE_SSH_KEY:
-        required: true
 
 jobs:
   format:
@@ -22,6 +20,11 @@ jobs:
     steps:
       - name: checkout terraform code
         uses: actions/checkout@v3
+        with:
+          path: ./config-code
+      - name: terraform validate
+        uses: dflook/terraform-validate@v1
+        id: validate
         with:
           path: ./config-code
       - name: checkout sentinel policies
