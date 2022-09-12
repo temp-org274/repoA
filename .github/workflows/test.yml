@@ -37,3 +37,14 @@ jobs:
           options: -v ${{ env.currentDir }}/sentinel-policy-as-code/common-functions:/opt/sentinel/common-functions -v ${{ env.currentDir }}/sentinel-policy-as-code/policies:/opt/sentinel/policies  -v ${{ env.currentDir }}/config-code:/opt/sentinel/config-code -e TF_TOKEN=${{ secrets.TF_TOKEN }} -e organization=${{ secrets.ORGANIZATION }} -e workspace=${{ github.event.repository.name }} -e varset=${{ inputs.varset }}
           shell: bash
           run: /opt/sentinel/script.sh
+      - run: |
+          echo 'MESSAGE_ENV<<EOF' >> $GITHUB_ENV
+          cat message.txt >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+      - name: write policy check result to pr
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            ${{ env.MESSAGE_ENV }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
