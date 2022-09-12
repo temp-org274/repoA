@@ -39,7 +39,7 @@ jobs:
           run: /opt/sentinel/script.sh
       - run: |
           echo 'MESSAGE_ENV<<EOF' >> $GITHUB_ENV
-          cat ${{ env.currentDir }}/policies/message.txt >> $GITHUB_ENV
+          cat ${{ env.currentDir }}/sentinel-policy-as-code/policies/message.txt >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
       - name: write policy check result to pr
         uses: mshick/add-pr-comment@v1
