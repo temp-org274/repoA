@@ -10,6 +10,8 @@ on:
         required: true
       ORGANIZATION:
         required: true
+      GIT_TOKEN:
+        required: true
 
 jobs:
   format:
