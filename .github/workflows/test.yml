@@ -32,6 +32,6 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: ruchabhange/sentinel:0.1.0
-          options: -v ${{ env.currentDir }}/sentinel-policy-as-code/common-functions:/opt/sentinel/common-functions -v ${{ env.currentDir }}/sentinel-policy-as-code/policies:/opt/sentinel/policies  -v ${{ env.CurrentDir }}/config-code:/opt/sentinel/config-code -e TF_TOKEN=${{ secrets.TF_TOKEN }} -e organization=${{ secrets.ORGANIZATION }} -e workspace=${{ github.event.repository.name }} -e varset=${{ inputs.varset }}
+          options: -v ${{ env.currentDir }}/sentinel-policy-as-code/common-functions:/opt/sentinel/common-functions -v ${{ env.currentDir }}/sentinel-policy-as-code/policies:/opt/sentinel/policies  -v ${{ env.currentDir }}/config-code:/opt/sentinel/config-code -e TF_TOKEN=${{ secrets.TF_TOKEN }} -e organization=${{ secrets.ORGANIZATION }} -e workspace=${{ github.event.repository.name }} -e varset=${{ inputs.varset }}
           shell: bash
           run: /opt/sentinel/script.sh
