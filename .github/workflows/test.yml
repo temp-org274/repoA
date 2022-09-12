@@ -2,6 +2,9 @@ name: Terraform sentinel policies check
 
 on:
   workflow_call:
+    inputs:
+      varset:
+        type: string
     secrets:
       TF_TOKEN:
         required: true
@@ -12,18 +15,23 @@ jobs:
   format:
     runs-on: ubuntu-latest
     name: sentinel check
+    env:
+      currentDir: /home/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}
     steps:
       - name: checkout terraform code
-        uses: actions/checkout@v2
-      - name: debug
-        run: |
-          pwd
-          ls ~
-          
+        uses: actions/checkout@v3
+        with:
+          path: ./config-code
+      - name: checkout sentinel policies
+        uses: actions/checkout@v3
+        with:
+          repository: infracloudio/sentinel-policy-as-code
+          token: ${{ github.token }}
+          path: ./sentinel-policy-as-code
       - name: run docker container containing script
         uses: addnab/docker-run-action@v3
         with:
-          image: ruchabhange/sentinel:0.1.2
-          options: -v /home/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}:/opt/sentinel/config-code -e TF_TOKEN=${{ secrets.TF_TOKEN }} -e organization=${{ secrets.ORGANIZATION }} -e workspace=${{ github.event.repository.name }}
+          image: ruchabhange/sentinel:0.1.0
+          options: -v ${{ env.currentDir }}/sentinel-policy-as-code/common-functions:/opt/sentinel/common-functions -v ${{ env.currentDir }}/sentinel-policy-as-code/policies:/opt/sentinel/policies  -v ${{ env.CurrentDir }}/config-code:/opt/sentinel/config-code -e TF_TOKEN=${{ secrets.TF_TOKEN }} -e organization=${{ secrets.ORGANIZATION }} -e workspace=${{ github.event.repository.name }} -e varset=${{ inputs.varset }}
           shell: bash
           run: /opt/sentinel/script.sh
