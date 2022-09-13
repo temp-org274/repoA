@@ -10,7 +10,8 @@ on:
         required: true
       ORGANIZATION:
         required: true
-
+      PRIVATE_SSH_KEY:
+        required: true
 jobs:
   format:
     runs-on: ubuntu-latest
