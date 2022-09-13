@@ -6,10 +6,6 @@ on:
       varset:
         type: string
     secrets:
-      TF_TOKEN:
-        required: true
-      ORGANIZATION:
-        required: true
       PRIVATE_SSH_KEY:
         required: true
 jobs:
