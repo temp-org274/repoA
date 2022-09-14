@@ -51,12 +51,14 @@ jobs:
 
 This workflow checks organization level sentinel policies against your terraform code.
 
-inputs
+### workflow required few inputs and secrets to be passed to it
+
+Inputs
 - varset : name of the variable set containing aws credentials
 - organization : terraform cloud org name
 - workspace: terraform cloud workspace name
 
-secrets
+Secrets
 - TF_TOKEN : terraform cloud token having permission for the workspace
 - PRIVATE_SSH_KEY : private ssh key to access private repo
 
@@ -92,7 +94,7 @@ The common functions, policies and terraform code are being mounted as volumes t
 - varset       : name of the variable set containing aws credentials
 
 
-To call this workflow caller workflow need to implement the below:
+### To call this workflow caller workflow need to implement the below:
 
 ```yaml
 name: Reusable Github Workflow
