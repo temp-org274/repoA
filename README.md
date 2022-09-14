@@ -1,6 +1,11 @@
-# terraform-reusable-workflows
+# Reusable github actions workflows
 
 This repository contains reusable github action workflows for terraform. Workflows needs to be under `.github/workflows` directory.
+
+A reusable workflow can be used by another workflow if either of the following is true:
+
+- Both workflows are in the same repository.
+- The called workflow is stored in a public repository, and your organization allows you to use public reusable workflows.
 
 ## workflow structure
 
@@ -48,10 +53,12 @@ This workflow checks organization level sentinel policies against your terraform
 
 inputs
 - varset : name of the variable set containing aws credentials
+- organization : terraform cloud org name
+- workspace: terraform cloud workspace name
 
 secrets
 - TF_TOKEN : terraform cloud token having permission for the workspace
-- ORGANIZATION : terraform cloud org name
+- PRIVATE_SSH_KEY : private ssh key to access private repo
 
 
 ```yaml
@@ -70,7 +77,7 @@ To checkout other private repositories deploy keys have been used, a ssh key pai
         uses: addnab/docker-run-action@v3
         with:
           image: ruchabhange/sentinel:0.1.1
-          options: -v ${{ env.currentDir }}/sentinel-policy-as-code/common-functions:/opt/sentinel/common-functions -v ${{ env.currentDir }}/sentinel-policy-as-code/policies:/opt/sentinel/policies  -v ${{ env.currentDir }}/config-code:/opt/sentinel/config-code -e TF_TOKEN=${{ secrets.TF_TOKEN }} -e organization=${{ secrets.ORGANIZATION }} -e workspace=${{ github.event.repository.name }} -e varset=${{ inputs.varset }}
+          options: -v ${{ env.currentDir }}/sentinel-policy-as-code/common-functions:/opt/sentinel/common-functions -v ${{ env.currentDir }}/sentinel-policy-as-code/policies:/opt/sentinel/policies  -v ${{ env.currentDir }}/config-code:/opt/sentinel/config-code -e TF_TOKEN=${{ secrets.TF_TOKEN }} -e organization=${{ inputs.organization }} -e workspace=${{ inputs.workspace }} -e varset=${{ inputs.varset }}
           shell: bash
           run: /opt/sentinel/script.sh
 ```
@@ -84,3 +91,26 @@ The common functions, policies and terraform code are being mounted as volumes t
 - workspace    : terraform cloud workspace name
 - varset       : name of the variable set containing aws credentials
 
+
+To call this workflow caller workflow need to implement the below:
+
+```yaml
+name: Reusable Github Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: 
+
+jobs:
+  ReuseableJob:
+    uses: infracloudio/reusable-github-actions/.github/workflows/policy-check.yml@main
+    secrets: inherit
+    with:
+      varset: 
+      organization: 
+      workspace: 
+```
+
+secrets can be mentioned 1 by 1 or `inherit` keyword can be used to pass all the action secrets created in the caller repository. Two secrets are required namely `TF_TOKEN` and `PRIVATE_SSH_KEY`.
