@@ -51,7 +51,7 @@ jobs:
 
 This workflow checks organization level sentinel policies against your terraform code.
 
-### workflow required few inputs and secrets to be passed to it
+##### workflow requires few inputs and secrets to be passed to it
 
 Inputs
 - varset : name of the variable set containing aws credentials
