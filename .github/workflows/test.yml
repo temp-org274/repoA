@@ -12,8 +12,6 @@ on:
         type: string
         required: true
     secrets:
-      TF_TOKEN:
-        required: false
       PRIVATE_SSH_KEY:
         required: true
 jobs:
