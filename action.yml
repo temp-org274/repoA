@@ -21,4 +21,4 @@ runs:
       shell: bash
     - run: goodbye.sh
       shell: bash
-    - uses: ./.github/workflows/terraform/test.yml          
+    - uses: ./.github/workflows/terraform      
