@@ -30,29 +30,29 @@ jobs:
         uses: dflook/terraform-fmt@v1
         with:
           path: .
-      - name: checkout script and policies
+      
+      - name: checkout terraform code
         uses: actions/checkout@v2
         with:
           repository: temp-org274/repoA
-          path: ./temp_path
-      - name: github context
-        run: |
-          ls
-          mv ./temp_path/* .
-          rm -rf temp_path
-          echo
-          ls
-
-      - name: execute script
-        run: bash script.sh ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
+          path: ./config-code
+      - name: run docker container containing script
+        uses: addnab/docker-run-action@v3
+        with:
+          image: sentinel:0.1.2
+          options: -v ./config-code:/opt/sentinel/config-code ${{ secrets.TF_TOKEN }} ${{ secrets.ORGANIZATION }} ${{ github.event.repository.name }}
       - name: debugging
         run: |
           ls
-          echo "MESSAGE=$(cat message.txt)" >> $GITHUB_ENV
+          # echo "MESSAGE=$(cat message.txt)" >> $GITHUB_ENV
+          
+          echo 'MESSAGE_ENV<<EOF' >> $GITHUB_ENV
+          cat message.txt >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
       - name: write policy check result to pr
         uses: mshick/add-pr-comment@v1
         with:
           message: |
-            ${{ env.MESSAGE }}
+            ${{ env.MESSAGE_ENV }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
