@@ -31,9 +31,10 @@ runs:
         shell: bash
         run: /opt/sentinel/script.sh
     - name: pass policy check result to env variable
+      if: ${{ github.event_name == 'pull_request' }}
       run: |
         echo 'MESSAGE_ENV<<EOF' >> $GITHUB_ENV
-        cat ${{ env.currentDir }}/sentinel-policy-as-code/policies/message.txt >> $GITHUB_ENV
+        cat ${{ inputs.sentinel-policy-path }}/policies/message.txt >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
       shell: bash
     - name: write policy check result to pr
