@@ -29,12 +29,14 @@ runs:
         else
           echo "DOCKERFILE_PATH=${{ inputs.dockerfile-path  }}" >> $GITHUB_ENV
         fi
+      shell: bash
     - name: set environment variable for build args
       run: |
         echo ${{ inputs.build-args }} | tr -s ',' '\n' > build-args.txt
         echo 'BUILD_ARGS<<EOF' >> $GITHUB_ENV
         cat build-args.txt >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV 
+      shell: bash
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
