@@ -13,7 +13,8 @@ inputs:
     required: true
   sentinel-policy-path:
     required: true  
-
+  GITHUB_TOKEN:
+    required: true
 runs:
   using: "composite"
   steps:
@@ -41,5 +42,5 @@ runs:
       with:
         message: |
           ${{ env.MESSAGE_ENV }}
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token: ${{ inputs.GITHUB_TOKEN }}
 
