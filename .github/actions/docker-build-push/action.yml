@@ -1,0 +1,44 @@
+name: docker build and push
+description: builds and pushes a docker image to docker hub
+inputs:
+  DOCKERHUB_USERNAME:
+    required: true
+  DOCKERHUB_PASSWORD:
+    required: true
+  dockerfile-path:
+    required: false
+    description: uses root dir if not specified
+  image-name:
+    required: true
+  build-args:
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ inputs.DOCKERHUB_USERNAME }}
+        password: ${{ inputs.DOCKERHUB_PASSWORD }}
+    - name: set environment variable for dockerfile path
+      run: |
+        if [[ ${{ inputs.dockerfile-path }} == "" ]]; then
+          echo "DOCKERFILE_PATH=." >> $GITHUB_ENV
+        else
+          echo "DOCKERFILE_PATH=${{ inputs.dockerfile-path  }}" >> $GITHUB_ENV
+        fi
+    - name: set environment variable for build args
+      run: |
+        echo ${{ inputs.build-args }} | tr -s ',' '\n' > build-args.txt
+        echo 'BUILD_ARGS<<EOF' >> $GITHUB_ENV
+        cat build-args.txt >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV 
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: ${{ env.DOCKERFILE_PATH }}
+        push: true
+        build-args: ${{ env.BUILD_ARGS }}
+        tags: ${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.image-name }}:latest
