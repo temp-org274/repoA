@@ -40,5 +40,6 @@ runs:
       with:
         context: ${{ env.DOCKERFILE_PATH }}
         push: true
-        build-args: ${{ env.BUILD_ARGS }}
+        build-args: |
+          ${{ env.BUILD_ARGS }}
         tags: ${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.image-name }}:latest
