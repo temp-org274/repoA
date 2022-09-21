@@ -12,6 +12,9 @@ inputs:
     required: true
   build-args:
     required: false
+outputs:
+  imageid:
+    value: ${{ steps.build-and-push.outputs.imageid }}
 runs:
   using: "composite"
   steps:
@@ -36,6 +39,7 @@ runs:
         echo 'EOF' >> $GITHUB_ENV 
       shell: bash
     - name: Build and push
+      id: build-and-push
       uses: docker/build-push-action@v3
       with:
         context: ${{ env.DOCKERFILE_PATH }}
