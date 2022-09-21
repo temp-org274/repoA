@@ -1,0 +1,45 @@
+name: Terraform sentinel policies check
+description: runs organization level policies check using sentinel cli
+inputs:
+  varset:
+    required: false # can skip if workspace already added to variable set
+  organization:
+    required: true
+  workspace:
+    required: true
+  TF_TOKEN:
+    required: true
+  terraform-code-path:
+    required: true
+  sentinel-policy-path:
+    required: true  
+
+runs:
+  using: "composite"
+  steps:
+    - name: terraform validate
+      uses: dflook/terraform-validate@v1
+      id: validate
+      with:
+        path: ./${{ inputs.terraform-code-path }}
+    - name: run docker container containing script
+      uses: addnab/docker-run-action@v3
+      with:
+        image: dsfdfdsg/sentinel:latest
+        options: -v ${{ inputs.sentinel-policy-path }}/common-functions:/opt/sentinel/common-functions -v ${{ inputs.sentinel-policy-path }}/policies:/opt/sentinel/policies  -v ${{ inputs.terraform-code-path }}:/opt/sentinel/config-code -e TF_TOKEN=${{ inputs.TF_TOKEN }} -e organization=${{ inputs.organization }} -e workspace=${{ inputs.workspace }} -e varset=${{ inputs.varset }}
+        shell: bash
+        run: /opt/sentinel/script.sh
+    - name: pass policy check result to env variable
+      run: |
+        echo 'MESSAGE_ENV<<EOF' >> $GITHUB_ENV
+        cat ${{ env.currentDir }}/sentinel-policy-as-code/policies/message.txt >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
+      shell: bash
+    - name: write policy check result to pr
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: mshick/add-pr-comment@v1
+      with:
+        message: |
+          ${{ env.MESSAGE_ENV }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+
