@@ -22,7 +22,7 @@ runs:
       uses: dflook/terraform-validate@v1
       id: validate
       with:
-        path: ./${{ inputs.terraform-code-path }}
+        path: ${{ inputs.terraform-code-path }}
     - name: run docker container containing script
       uses: addnab/docker-run-action@v3
       with:
