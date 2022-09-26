@@ -33,6 +33,11 @@ runs:
         else
           echo "DOCKERFILE_PATH=${{ inputs.dockerfile-path  }}" >> $GITHUB_ENV
         fi
+        if [[ ${{ inputs.registry }} == "" ]]; then
+          echo "REGISTRY=" >> $GITHUB_ENV
+        else
+          echo "REGISTRY=${{ inputs.registry }}/" >> $GITHUB_ENV
+        fi
       shell: bash
     - name: set environment variable for build args
       run: |
@@ -49,4 +54,5 @@ runs:
         push: true
         build-args: |
           ${{ env.BUILD_ARGS }}
-        tags: ${{ inputs.registry }}/${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.image-name }}:latest
+        tags: ${{ env.REGISTRY }}${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.image-name }}:latest
+
