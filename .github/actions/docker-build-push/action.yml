@@ -12,6 +12,8 @@ inputs:
     required: true
   build-args:
     required: false
+  registry:
+    required: false
 outputs:
   imageid:
     value: ${{ steps.build-and-push.outputs.imageid }}
@@ -23,6 +25,7 @@ runs:
       with:
         username: ${{ inputs.DOCKERHUB_USERNAME }}
         password: ${{ inputs.DOCKERHUB_PASSWORD }}
+        registry: ${{ inputs.registry }}
     - name: set environment variable for dockerfile path
       run: |
         if [[ ${{ inputs.dockerfile-path }} == "" ]]; then
@@ -46,4 +49,4 @@ runs:
         push: true
         build-args: |
           ${{ env.BUILD_ARGS }}
-        tags: ${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.image-name }}:latest
+        tags: ${{ inputs.registry }}/${{ inputs.DOCKERHUB_USERNAME }}/${{ inputs.image-name }}:latest
