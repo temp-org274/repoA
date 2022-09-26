@@ -28,12 +28,12 @@ runs:
         registry: ${{ inputs.registry }}
     - name: set environment variable for dockerfile path
       run: |
-        if [[ ${{ inputs.dockerfile-path }} == "" ]]; then
+        if [[ "${{ inputs.dockerfile-path }}" == "" ]]; then
           echo "DOCKERFILE_PATH=." >> $GITHUB_ENV
         else
           echo "DOCKERFILE_PATH=${{ inputs.dockerfile-path  }}" >> $GITHUB_ENV
         fi
-        if [[ ${{ inputs.registry }} == "" ]]; then
+        if [[ "${{ inputs.registry }}" == "" ]]; then
           echo "REGISTRY=" >> $GITHUB_ENV
         else
           echo "REGISTRY=${{ inputs.registry }}/" >> $GITHUB_ENV
