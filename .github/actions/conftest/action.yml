@@ -32,6 +32,7 @@ runs:
     - name: Initialize Terraform
       run: |
         cd ${{ inputs.TF_ROOT }} 
+        echo ${{ inputs.TF_ROOT }}/tfplan.json
         #terraform init -input=false
       shell: bash
     - name: Plan Terraform
@@ -44,5 +45,23 @@ runs:
       uses: instrumenta/conftest-action@master
       with:
         files: ${{ inputs.TF_ROOT }}/tfplan.json
-        policy: ${{ inputs.conftest_policy_path }} 
+        policy: ${{ inputs.conftest_policy_path }}
+    - name: pass policy check result to env variable
+      if: ${{ github.event_name == 'pull_request' }}
+      run: |
+        ls
+        echo ""
+        ls ${{ inputs.sentinel-policy-path }}/policies
+        echo 'MESSAGE_ENV<<EOF' >> $GITHUB_ENV
+        cat ${{ inputs.sentinel-policy-path }}/policies/PR_COMMENT.md >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
+      shell: bash
+    - name: write policy check result to pr
+      if: ${{ github.event_name == 'pull_request' }}
+      uses: mshick/add-pr-comment@v1
+      with:
+        message: |
+          ${{ env.MESSAGE_ENV }}
+        repo-token: ${{ inputs.GITHUB_TOKEN }}
+ 
 
