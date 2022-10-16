@@ -32,13 +32,13 @@ runs:
     - name: Initialize Terraform
       run: |
         cd ${{ inputs.TF_ROOT }} 
-        terraform init -input=false
+        #terraform init -input=false
       shell: bash
     - name: Plan Terraform
       id: plan
       run: |
-        terraform plan -var-file values.tfvars -input=false --out tfplan.binary
-        terraform show -json tfplan.binary > tfplan.json
+        #terraform plan -var-file values.tfvars -input=false --out tfplan.binary
+        #terraform show -json tfplan.binary > tfplan.json
       shell: bash
     - name: validate terraform code
       uses: instrumenta/conftest-action@master
