@@ -31,12 +31,14 @@ runs:
         aws-session-token: ${{ inputs.AWS_SESSION_TOKEN }}
     - name: Initialize Terraform
       run: terraform init -input=false
+      shell: bash
     - name: Plan Terraform
       id: plan
       run: |
         cd ./${{ TF_ROOT }}
         terraform plan -var-file values.tfvars -input=false --out tfplan.binary
         terraform show -json tfplan.binary > tfplan.json
+      shell: bash
     - name: validate terraform code
       uses: instrumenta/conftest-action@master
       with:
