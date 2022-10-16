@@ -31,8 +31,8 @@ runs:
         aws-session-token: ${{ inputs.AWS_SESSION_TOKEN }}
     - name: Initialize Terraform
       run: |
-        cd ${{ inputs.TF_ROOT }} 
-        ls ${{ inputs.TF_ROOT }}/tfplan.json
+        #cd ${{ inputs.TF_ROOT }} 
+        #ls ${{ inputs.TF_ROOT }}/tfplan.json
         #terraform init -input=false
       shell: bash
     - name: Plan Terraform
