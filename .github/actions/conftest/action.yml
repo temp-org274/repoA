@@ -35,7 +35,7 @@ runs:
     - name: Plan Terraform
       id: plan
       run: |
-        cd ./${{ TF_ROOT }}
+        cd ./${{ inputs.TF_ROOT }}
         terraform plan -var-file values.tfvars -input=false --out tfplan.binary
         terraform show -json tfplan.binary > tfplan.json
       shell: bash
