@@ -32,7 +32,7 @@ runs:
     - name: Initialize Terraform
       run: |
         cd ${{ inputs.TF_ROOT }} 
-        echo ${{ inputs.TF_ROOT }}/tfplan.json
+        ls ${{ inputs.TF_ROOT }}/tfplan.json
         #terraform init -input=false
       shell: bash
     - name: Plan Terraform
