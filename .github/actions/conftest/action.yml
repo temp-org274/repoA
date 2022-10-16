@@ -43,6 +43,6 @@ runs:
     - name: validate terraform code
       uses: instrumenta/conftest-action@master
       with:
-        files: tfplan.json
+        files: ${{ inputs.TF_ROOT }}/tfplan.json
         policy: ${{ inputs.conftest_policy_path }} 
 
