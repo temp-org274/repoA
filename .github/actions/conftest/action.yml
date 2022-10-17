@@ -41,27 +41,11 @@ runs:
         #terraform plan -var-file values.tfvars -input=false --out tfplan.binary
         #terraform show -json tfplan.binary > tfplan.json
       shell: bash
-    - name: validate terraform code
-      uses: instrumenta/conftest-action@master
+    - name: run docker container containing script
+      uses: addnab/docker-run-action@v3
       with:
-        files: ${{ inputs.TF_ROOT }}/tfplan.json
-        policy: ${{ inputs.conftest_policy_path }}
-    - name: pass policy check result to env variable
-      if: ${{ github.event_name == 'pull_request' }}
-      run: |
-        ls
-        echo ""
-        ls ${{ inputs.sentinel-policy-path }}/policies
-        echo 'MESSAGE_ENV<<EOF' >> $GITHUB_ENV
-        cat ${{ inputs.sentinel-policy-path }}/policies/PR_COMMENT.md >> $GITHUB_ENV
-        echo 'EOF' >> $GITHUB_ENV
-      shell: bash
-    - name: write policy check result to pr
-      if: ${{ github.event_name == 'pull_request' }}
-      uses: mshick/add-pr-comment@v1
-      with:
-        message: |
-          ${{ env.MESSAGE_ENV }}
-        repo-token: ${{ inputs.GITHUB_TOKEN }}
- 
-
+        image: ${{ inputs.image-name }}
+        options: -v ${{ inputs.conftest_policy_path }}:/opt/conftest-policy  -v ${{ inputs.TF_ROOT }}:/opt/terraform-json -e conftest_policy_path=${{ inputs.conftest_policy_path  }} -e TF_ROOT=${{ inputs.TF_ROOT }}/tfplan.json
+        shell: bash
+        run: /opt/script.sh
+   
