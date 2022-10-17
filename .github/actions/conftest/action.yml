@@ -12,6 +12,8 @@ inputs:
     required: true
   conftest_policy_path:
     required: true
+  image-name: 
+    required: true
 outputs:
   imageid:
     value: ${{ steps.build-and-push.outputs.imageid }}
