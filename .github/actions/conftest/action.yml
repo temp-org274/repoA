@@ -47,7 +47,7 @@ runs:
       uses: addnab/docker-run-action@v3
       with:
         image: ${{ inputs.image-name }}
-        options: -v ${{ inputs.conftest_policy_path }}:/opt/conftest-policy  -v ${{ inputs.TF_ROOT }}:/opt/terraform-json -e conftest_policy_path=${{ inputs.conftest_policy_path  }} -e TF_ROOT=${{ inputs.TF_ROOT }}/tfplan.json
+        options: -v ${{ inputs.conftest_policy_path }}:/opt/conftest-policy  -v ${{ inputs.TF_ROOT }}:/opt/terraform-json -e conftest_policy_path=/opt/conftest-policy -e TF_ROOT=/opt/terraform-json/tfplan.json
         shell: bash
         run: /opt/script.sh
    
