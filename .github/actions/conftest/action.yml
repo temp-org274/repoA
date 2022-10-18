@@ -57,7 +57,7 @@ runs:
         echo ""
         ls ${{ inputs.conftest_policy_path }}/policies
         echo 'MESSAGE_ENV<<EOF' >> $GITHUB_ENV
-        cat ${{ inputs.conftest_policy_path }}/policies/PR_COMMENT.md >> $GITHUB_ENV
+        cat ${{ inputs.TF_ROOT }}/message.md >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
       shell: bash
     - name: write policy check result to pr
