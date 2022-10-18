@@ -14,9 +14,8 @@ inputs:
     required: true
   image-name: 
     required: true
-outputs:
-  imageid:
-    value: ${{ steps.build-and-push.outputs.imageid }}
+  GITHUB_TOKEN:
+    required: true
 runs:
   using: "composite"
   steps:
