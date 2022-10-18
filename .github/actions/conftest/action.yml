@@ -53,9 +53,6 @@ runs:
     - name: pass policy check result to env variable
       if: ${{ github.event_name == 'pull_request' }}
       run: |
-        ls
-        echo ""
-        ls ${{ inputs.conftest_policy_path }}/policies
         echo 'MESSAGE_ENV<<EOF' >> $GITHUB_ENV
         cat ${{ inputs.TF_ROOT }}/msg.md >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
