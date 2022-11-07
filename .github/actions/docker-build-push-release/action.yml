@@ -28,7 +28,7 @@ runs:
           images: |
             ${{ inputs.image-name }}
           tags: |
-            type=ref,event=pr
+            type=ref,event=branch
     - name: Login to DockerHub
       uses: docker/login-action@v2
       with:
